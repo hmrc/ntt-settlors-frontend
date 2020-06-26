@@ -17,15 +17,20 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.Name
 import play.api.data.Form
+import play.api.data.Forms._
 
 class WhatIsSettlorsNameFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[Name] =
     Form(
-      "value" -> text("whatIsSettlorsName.error.required")
-        .verifying(maxLength(100, "whatIsSettlorsName.error.length"))
+      mapping(
+        "firstName" -> text("whatIsSettlorsName.firstName.error.required")
+          .verifying(maxLength(100, "whatIsSettlorsName.firstName.error.length")),
+        "middleName" -> optionalText().verifying(optMaxLength(100, "whatIsSettlorsName.middleName.error.length")),
+        "lastName" -> text("whatIsSettlorsName.lastName.error.required").verifying(maxLength(100, "whatIsSettlorsName.lastName.error.length"))
+      )(Name.apply)(Name.unapply)
     )
 }

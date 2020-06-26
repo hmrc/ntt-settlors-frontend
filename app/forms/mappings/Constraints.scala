@@ -78,6 +78,14 @@ trait Constraints {
         Invalid(errorKey, regex)
     }
 
+  protected def optMaxLength(maximum: Int, errorKey: String): Constraint[Option[String]] =
+    Constraint {
+      case Some(str) if str.length > maximum =>
+        Invalid(errorKey, maximum)
+      case _ =>
+        Valid
+    }
+
   protected def maxLength(maximum: Int, errorKey: String): Constraint[String] =
     Constraint {
       case str if str.length <= maximum =>

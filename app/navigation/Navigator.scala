@@ -34,9 +34,11 @@ class Navigator @Inject()() {
     case  WhatIsTheDateOfDeathPage => _ => routes.DoYouKnowDateOfBirthController.onPageLoad(NormalMode)
     case  DoYouKnowDateOfBirthPage => _ => routes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode)
     case  WhatIsTheDateOfBirthPage => _ => routes.DoYouKnowCountryOfNationalityController.onPageLoad(NormalMode)
+    case  DoYouKnowCountryOfNationalityPage => _ => routes.WhatIsCountryOfNationalityController.onPageLoad(NormalMode)
     case  WhatIsCountryOfNationalityPage => _ => routes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode)
     case  IsCountryOfNationalitySameAsCountryOfResidencyPage => _ => routes.DoYouKnowCountryOfResidencyController.onPageLoad(NormalMode)
     case  DoYouKnowCountryOfResidencyPage => _ => routes.WhatIsCountryOfResidencyController.onPageLoad(NormalMode)
+    case  WhatIsCountryOfResidencyPage => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
