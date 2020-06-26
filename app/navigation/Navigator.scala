@@ -27,6 +27,7 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
+    case  IndexPage => _ => routes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(NormalMode)
     case  WasTrustSetUpAfterSettlorDiedPage => _ => routes.WhatIsSettlorsNameController.onPageLoad(NormalMode)
     case  WhatIsSettlorsNamePage => _ => routes.DoYouKnowDateOfDeathController.onPageLoad(NormalMode)
     case  DoYouKnowDateOfDeathPage => _ => routes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode)

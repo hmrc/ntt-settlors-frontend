@@ -16,22 +16,38 @@
 
 package controllers
 
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.Inject
+import models.{NormalMode, UserAnswers}
+import navigation.Navigator
+import pages.IndexPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
 import scala.concurrent.ExecutionContext
 
 class IndexController @Inject()(
     val controllerComponents: MessagesControllerComponents,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    sessionRepository: SessionRepository,
     renderer: Renderer
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action.async {
-    implicit request =>
+  def onPageLoad: Action[AnyContent] = (identify andThen getData).async {
+    implicit request => renderer.render("index.njk").map(Ok(_))
+  }
 
-      renderer.render("index.njk").map(Ok(_))
+  def onSubmit: Action[AnyContent] = (identify andThen getData).async {
+    implicit request =>
+      val answers = UserAnswers(request.internalId)
+      for {
+        _              <- sessionRepository.set(answers)
+      } yield  Redirect(navigator.nextPage(IndexPage, NormalMode, answers))
   }
 }
