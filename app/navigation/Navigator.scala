@@ -27,7 +27,15 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case _ => _ => routes.IndexController.onPageLoad()
+    case  WasTrustSetUpAfterSettlorDiedPage => _ => routes.WhatIsSettlorsNameController.onPageLoad(NormalMode)
+    case  WhatIsSettlorsNamePage => _ => routes.DoYouKnowDateOfDeathController.onPageLoad(NormalMode)
+    case  DoYouKnowDateOfDeathPage => _ => routes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode)
+    case  WhatIsTheDateOfDeathPage => _ => routes.DoYouKnowDateOfBirthController.onPageLoad(NormalMode)
+    case  DoYouKnowDateOfBirthPage => _ => routes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode)
+    case  WhatIsTheDateOfBirthPage => _ => routes.DoYouKnowCountryOfNationalityController.onPageLoad(NormalMode)
+    case  WhatIsCountryOfNationalityPage => _ => routes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode)
+    case  IsCountryOfNationalitySameAsCountryOfResidencyPage => _ => routes.DoYouKnowCountryOfResidencyController.onPageLoad(NormalMode)
+    case  DoYouKnowCountryOfResidencyPage => _ => routes.WhatIsCountryOfResidencyController.onPageLoad(NormalMode)
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {

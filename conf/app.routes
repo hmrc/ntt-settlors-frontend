@@ -13,3 +13,58 @@ GET        /check-your-answers                          controllers.CheckYourAns
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
 GET        /accessibility-statement                     controllers.AccessibilityController.onPageLoad
+
+GET        /doYouKnowCountryOfNationality                        controllers.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowCountryOfNationality                        controllers.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowCountryOfNationality                  controllers.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowCountryOfNationality                  controllers.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowCountryOfResidency                        controllers.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowCountryOfResidency                        controllers.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowCountryOfResidency                  controllers.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowCountryOfResidency                  controllers.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowDateOfBirth                        controllers.DoYouKnowDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowDateOfBirth                        controllers.DoYouKnowDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowDateOfBirth                  controllers.DoYouKnowDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowDateOfBirth                  controllers.DoYouKnowDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowDateOfDeath                        controllers.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowDateOfDeath                        controllers.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowDateOfDeath                  controllers.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowDateOfDeath                  controllers.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isCountryOfNationalitySameAsCountryOfResidency                        controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /isCountryOfNationalitySameAsCountryOfResidency                        controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wasTrustSetUpAfterSettlorDied                        controllers.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)
+POST       /wasTrustSetUpAfterSettlorDied                        controllers.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWasTrustSetUpAfterSettlorDied                  controllers.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWasTrustSetUpAfterSettlorDied                  controllers.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsCountryOfResidency                        controllers.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsCountryOfResidency                        controllers.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsCountryOfResidency                  controllers.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsCountryOfResidency                  controllers.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsSettlorsName                        controllers.WhatIsSettlorsNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsSettlorsName                        controllers.WhatIsSettlorsNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsSettlorsName                  controllers.WhatIsSettlorsNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsSettlorsName                  controllers.WhatIsSettlorsNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsTheDateOfBirth                  controllers.WhatIsTheDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsTheDateOfBirth                  controllers.WhatIsTheDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsTheDateOfBirth                        controllers.WhatIsTheDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsTheDateOfBirth                        controllers.WhatIsTheDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsTheDateOfDeath                  controllers.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsTheDateOfDeath                  controllers.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsTheDateOfDeath                        controllers.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsTheDateOfDeath                        controllers.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsCountryOfNationality                        controllers.WhatIsCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsCountryOfNationality                        controllers.WhatIsCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsCountryOfNationality                  controllers.WhatIsCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsCountryOfNationality                  controllers.WhatIsCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)

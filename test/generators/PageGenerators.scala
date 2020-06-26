@@ -20,4 +20,37 @@ import org.scalacheck.Arbitrary
 import pages._
 
 trait PageGenerators {
+
+  implicit lazy val arbitraryWhatIsCountryOfNationalityPage: Arbitrary[WhatIsCountryOfNationalityPage.type] =
+    Arbitrary(WhatIsCountryOfNationalityPage)
+
+  implicit lazy val arbitraryWhatIsTheDateOfDeathPage: Arbitrary[WhatIsTheDateOfDeathPage.type] =
+    Arbitrary(WhatIsTheDateOfDeathPage)
+
+  implicit lazy val arbitraryWhatIsTheDateOfBirthPage: Arbitrary[WhatIsTheDateOfBirthPage.type] =
+    Arbitrary(WhatIsTheDateOfBirthPage)
+
+  implicit lazy val arbitraryWhatIsSettlorsNamePage: Arbitrary[WhatIsSettlorsNamePage.type] =
+    Arbitrary(WhatIsSettlorsNamePage)
+
+  implicit lazy val arbitraryWhatIsCountryOfResidencyPage: Arbitrary[WhatIsCountryOfResidencyPage.type] =
+    Arbitrary(WhatIsCountryOfResidencyPage)
+
+  implicit lazy val arbitraryWasTrustSetUpAfterSettlorDiedPage: Arbitrary[WasTrustSetUpAfterSettlorDiedPage.type] =
+    Arbitrary(WasTrustSetUpAfterSettlorDiedPage)
+
+  implicit lazy val arbitraryIsCountryOfNationalitySameAsCountryOfResidencyPage: Arbitrary[IsCountryOfNationalitySameAsCountryOfResidencyPage.type] =
+    Arbitrary(IsCountryOfNationalitySameAsCountryOfResidencyPage)
+
+  implicit lazy val arbitraryDoYouKnowDateOfDeathPage: Arbitrary[DoYouKnowDateOfDeathPage.type] =
+    Arbitrary(DoYouKnowDateOfDeathPage)
+
+  implicit lazy val arbitraryDoYouKnowDateOfBirthPage: Arbitrary[DoYouKnowDateOfBirthPage.type] =
+    Arbitrary(DoYouKnowDateOfBirthPage)
+
+  implicit lazy val arbitraryDoYouKnowCountryOfResidencyPage: Arbitrary[DoYouKnowCountryOfResidencyPage.type] =
+    Arbitrary(DoYouKnowCountryOfResidencyPage)
+
+  implicit lazy val arbitraryDoYouKnowCountryOfNationalityPage: Arbitrary[DoYouKnowCountryOfNationalityPage.type] =
+    Arbitrary(DoYouKnowCountryOfNationalityPage)
 }
