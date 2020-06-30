@@ -27,22 +27,24 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
 import repositories.SessionRepository
+import services.CountryService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsCountryOfResidencyController @Inject()(
-    override val messagesApi: MessagesApi,
-    sessionRepository: SessionRepository,
-    navigator: Navigator,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    formProvider: WhatIsCountryOfResidencyFormProvider,
-    val controllerComponents: MessagesControllerComponents,
-    renderer: Renderer
-)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
+                                                    override val messagesApi: MessagesApi,
+                                                    sessionRepository: SessionRepository,
+                                                    navigator: Navigator,
+                                                    identify: IdentifierAction,
+                                                    getData: DataRetrievalAction,
+                                                    requireData: DataRequiredAction,
+                                                    formProvider: WhatIsCountryOfResidencyFormProvider,
+                                                    override val countryService: CountryService,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    renderer: Renderer
+)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport with CountryLookup {
 
   private val form = formProvider()
 
@@ -56,7 +58,8 @@ class WhatIsCountryOfResidencyController @Inject()(
 
       val json = Json.obj(
         "form" -> preparedForm,
-        "mode" -> mode
+        "mode" -> mode,
+        "countries" -> countries(request2Messages(request))
       )
 
       renderer.render("whatIsCountryOfResidency.njk", json).map(Ok(_))
@@ -70,7 +73,8 @@ class WhatIsCountryOfResidencyController @Inject()(
 
           val json = Json.obj(
             "form" -> formWithErrors,
-            "mode" -> mode
+            "mode" -> mode,
+            "countries" -> countries(request2Messages(request))
           )
 
           renderer.render("whatIsCountryOfResidency.njk", json).map(BadRequest(_))

@@ -23,26 +23,28 @@ import models.Mode
 import navigation.Navigator
 import pages.WhatIsCountryOfNationalityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
+import play.api.libs.json.{Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
 import repositories.SessionRepository
+import services.CountryService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsCountryOfNationalityController @Inject()(
-    override val messagesApi: MessagesApi,
-    sessionRepository: SessionRepository,
-    navigator: Navigator,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    formProvider: WhatIsCountryOfNationalityFormProvider,
-    val controllerComponents: MessagesControllerComponents,
-    renderer: Renderer
-)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
+                                                      override val messagesApi: MessagesApi,
+                                                      sessionRepository: SessionRepository,
+                                                      navigator: Navigator,
+                                                      identify: IdentifierAction,
+                                                      getData: DataRetrievalAction,
+                                                      requireData: DataRequiredAction,
+                                                      formProvider: WhatIsCountryOfNationalityFormProvider,
+                                                      override val countryService: CountryService,
+                                                      val controllerComponents: MessagesControllerComponents,
+                                                      renderer: Renderer
+)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport with CountryLookup {
 
   private val form = formProvider()
 
@@ -56,7 +58,8 @@ class WhatIsCountryOfNationalityController @Inject()(
 
       val json = Json.obj(
         "form" -> preparedForm,
-        "mode" -> mode
+        "mode" -> mode,
+        "countries" -> countries(request2Messages(request))
       )
 
       renderer.render("whatIsCountryOfNationality.njk", json).map(Ok(_))
@@ -70,7 +73,8 @@ class WhatIsCountryOfNationalityController @Inject()(
 
           val json = Json.obj(
             "form" -> formWithErrors,
-            "mode" -> mode
+            "mode" -> mode,
+            "countries" -> countries(request2Messages(request))
           )
 
           renderer.render("whatIsCountryOfNationality.njk", json).map(BadRequest(_))

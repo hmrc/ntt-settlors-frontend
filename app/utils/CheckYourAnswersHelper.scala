@@ -19,7 +19,7 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Name, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import CheckYourAnswersHelper._
@@ -78,7 +78,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     answer =>
       Row(
         key     = Key(msg"whatIsSettlorsName.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
-        value   = Value(lit"$answer"),
+        value   = Value(name(answer)),
         actions = List(
           Action(
             content            = msg"site.edit",
@@ -193,6 +193,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         )
       )
   }
+
+  private def name(answer: Name): Content =
+   lit"${answer.firstName} ${answer.middleName.map(s => s.concat(" ")).getOrElse("")}${answer.lastName}"
 
   private def yesOrNo(answer: Boolean): Content =
     if (answer) {

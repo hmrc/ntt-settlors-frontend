@@ -2,3 +2,8 @@ $govuk-assets-path: "/ntt-settlors-frontend/assets/lib/govuk-frontend/govuk/asse
 
 @import "lib/govuk-frontend/govuk/all";
 @import "language-toggles.scss";
+@import "autocomplete.css";
+
+ul#country-autocomplete__listbox {
+    font-family: arial;
+}
