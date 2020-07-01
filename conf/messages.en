@@ -131,29 +131,29 @@ compliant.nine.p2.3=The full service was tested by HMRC and included disabled us
 compliant.nine.p3=This page was prepared on [date when it was first published]. It was last updated on [date when it was last updated].
 
 doYouKnowCountryOfNationality.title = Do you know their country of nationality?
-doYouKnowCountryOfNationality.heading = Do you know {0}’s country of nationality?
-doYouKnowCountryOfNationality.checkYourAnswersLabel = Do you know {0}’s country of nationality?
-doYouKnowCountryOfNationality.error.required = Select yes if you know {0}’s country of nationality
+doYouKnowCountryOfNationality.heading = Do you know their country of nationality?
+doYouKnowCountryOfNationality.checkYourAnswersLabel = Do you know their country of nationality?
+doYouKnowCountryOfNationality.error.required = Select yes if you know their country of nationality
 
 doYouKnowCountryOfResidency.title = Do you know their country of residency?
-doYouKnowCountryOfResidency.heading = Do you know {0}’s country of residency?
-doYouKnowCountryOfResidency.checkYourAnswersLabel = Do you know {0}’s country of residency?
-doYouKnowCountryOfResidency.error.required = Select yes if you know {0}’s country of residency
+doYouKnowCountryOfResidency.heading = Do you know their country of residency?
+doYouKnowCountryOfResidency.checkYourAnswersLabel = Do you know their country of residency?
+doYouKnowCountryOfResidency.error.required = Select yes if you know their country of residency
 
 doYouKnowDateOfBirth.title = Do you know their date of birth?
-doYouKnowDateOfBirth.heading = Do you know {0}’s date of birth?
-doYouKnowDateOfBirth.checkYourAnswersLabel = Do you know {0}’s date of birth?
-doYouKnowDateOfBirth.error.required = Select yes if you know {0}’s date of birth?
+doYouKnowDateOfBirth.heading = Do you know their date of birth?
+doYouKnowDateOfBirth.checkYourAnswersLabel = Do you know their date of birth?
+doYouKnowDateOfBirth.error.required = Select yes if you know their date of birth?
 
 doYouKnowDateOfDeath.title = Do you know their date of death?
-doYouKnowDateOfDeath.heading = Do you know {0}’s date of death?
-doYouKnowDateOfDeath.checkYourAnswersLabel = Do you know {0}’s date of death?
-doYouKnowDateOfDeath.error.required = Select yes if you know {0}’s date of death
+doYouKnowDateOfDeath.heading = Do you know their date of death?
+doYouKnowDateOfDeath.checkYourAnswersLabel = Do you know their date of death?
+doYouKnowDateOfDeath.error.required = Select yes if you know their date of death
 
 isCountryOfNationalitySameAsCountryOfResidency.title = Is their country of nationality the same as their residency?
-isCountryOfNationalitySameAsCountryOfResidency.heading = Is {0}’s country of nationality the same as their residency?
-isCountryOfNationalitySameAsCountryOfResidency.checkYourAnswersLabel = Is {0}’s country of nationality the same as their residency?
-isCountryOfNationalitySameAsCountryOfResidency.error.required = Select yes if {0}’s country of nationality the same as their residency
+isCountryOfNationalitySameAsCountryOfResidency.heading = Is their country of nationality the same as their residency?
+isCountryOfNationalitySameAsCountryOfResidency.checkYourAnswersLabel = Is their country of nationality the same as their residency?
+isCountryOfNationalitySameAsCountryOfResidency.error.required = Select yes if their country of nationality the same as their residency
 
 wasTrustSetUpAfterSettlorDied.title = Was the trust set up after the settlor died?
 wasTrustSetUpAfterSettlorDied.heading = Was the trust set up after the settlor died?
@@ -161,15 +161,15 @@ wasTrustSetUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after
 wasTrustSetUpAfterSettlorDied.error.required = Select yes if the trust set up after the settlor died
 
 whatIsCountryOfNationality.title = What is their country of nationality?
-whatIsCountryOfNationality.heading = What is {0}’s country of nationality?
-whatIsCountryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
-whatIsCountryOfNationality.error.required = Enter {0}’s country of nationality?
+whatIsCountryOfNationality.heading = What is their country of nationality?
+whatIsCountryOfNationality.checkYourAnswersLabel = What is their country of nationality?
+whatIsCountryOfNationality.error.required = Enter their country of nationality?
 whatIsCountryOfNationality.error.length = Country of nationality must be 100 characters or less
 
 whatIsCountryOfResidency.title = What is their country of residency?
-whatIsCountryOfResidency.heading = What is {0}’s country of residency?
-whatIsCountryOfResidency.checkYourAnswersLabel = What is {0}’s country of residency?
-whatIsCountryOfResidency.error.required = Enter {0}’s country of residency?
+whatIsCountryOfResidency.heading = What is their country of residency?
+whatIsCountryOfResidency.checkYourAnswersLabel = What is their country of residency?
+whatIsCountryOfResidency.error.required = Enter their country of residency?
 whatIsCountryOfResidency.error.length = Country of residency must be 100 characters or less
 
 whatIsSettlorsName.title = What is the settlor’s name?
@@ -191,19 +191,19 @@ whatIsSettlorsName.lastName.error.length = Last name must be 100 characters or l
 whatIsSettlorsName.error.length = Settlor’s name must be 100 characters or less
 
 whatIsTheDateOfBirth.title = What is their date of birth?
-whatIsTheDateOfBirth.heading = What is {0}’s date of birth?
+whatIsTheDateOfBirth.heading = What is their date of birth?
 whatIsTheDateOfBirth.hint = For example, 12 11 2007
-whatIsTheDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-whatIsTheDateOfBirth.error.required.all = Enter {0}’s date of birth
+whatIsTheDateOfBirth.checkYourAnswersLabel = What is their date of birth?
+whatIsTheDateOfBirth.error.required.all = Enter their date of birth
 whatIsTheDateOfBirth.error.required.two = The date of birth must include {0} and {1}
 whatIsTheDateOfBirth.error.required = The date of birth must include {0}
 whatIsTheDateOfBirth.error.invalid = Enter a real date of birth
 
 whatIsTheDateOfDeath.title = What is their date of death?
-whatIsTheDateOfDeath.heading = What is {0}’s date of death?
+whatIsTheDateOfDeath.heading = What is their date of death?
 whatIsTheDateOfDeath.hint = For example, 12 11 2007
-whatIsTheDateOfDeath.checkYourAnswersLabel = What is {0}’s date of death?
-whatIsTheDateOfDeath.error.required.all = Enter {0}’s date of death
+whatIsTheDateOfDeath.checkYourAnswersLabel = What is their date of death?
+whatIsTheDateOfDeath.error.required.all = Enter their date of death
 whatIsTheDateOfDeath.error.required.two = The date of death must include {0} and {1}
 whatIsTheDateOfDeath.error.required = The date of death must include {0}
 whatIsTheDateOfDeath.error.invalid = Enter a real date of death

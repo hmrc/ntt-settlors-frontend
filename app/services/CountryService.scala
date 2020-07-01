@@ -20,7 +20,11 @@ import javax.inject.Inject
 import models.autocomplete.{CountryDataProvider, NameValuePair}
 
 class CountryService @Inject()(data: CountryDataProvider) {
+
   lazy val getCountries: Option[Seq[NameValuePair]] = data.fetch map { s =>
-    s.sortWith(_.name < _.name)
-  }
+      s.sortWith(_.name < _.name)
+    }
+
+  def getCountryByCode(code: String): Option[String] = getCountries
+    .flatMap(seq => seq.find(nv => nv.value == code).map(nv => nv.name))
 }

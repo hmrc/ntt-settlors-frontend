@@ -21,19 +21,24 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import models.{CheckMode, Name, UserAnswers}
 import pages._
-import play.api.i18n.Messages
+import play.api.i18n.{Messages, MessagesApi}
 import CheckYourAnswersHelper._
+import com.google.inject.Inject
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import play.api.mvc.MessagesControllerComponents
+import renderer.Renderer
+import services.CountryService
 import uk.gov.hmrc.viewmodels._
 import uk.gov.hmrc.viewmodels.SummaryList._
 import uk.gov.hmrc.viewmodels.Text.Literal
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: CountryService )(implicit messages: Messages) {
 
   def whatIsCountryOfNationality: Option[Row] = userAnswers.get(WhatIsCountryOfNationalityPage) map {
     answer =>
       Row(
         key     = Key(msg"whatIsCountryOfNationality.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
-        value   = Value(lit"$answer"),
+        value   = Value(country(answer)),
         actions = List(
           Action(
             content            = msg"site.edit",
@@ -93,7 +98,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     answer =>
       Row(
         key     = Key(msg"whatIsCountryOfResidency.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
-        value   = Value(lit"$answer"),
+        value   = Value(country(answer)),
         actions = List(
           Action(
             content            = msg"site.edit",
@@ -193,6 +198,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         )
       )
   }
+
+  private def country(code: String): Content =
+    lit"${countryService.getCountryByCode(code).getOrElse("")}"
 
   private def name(answer: Name): Content =
    lit"${answer.firstName} ${answer.middleName.map(s => s.concat(" ")).getOrElse("")}${answer.lastName}"

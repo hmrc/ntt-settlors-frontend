@@ -17,9 +17,10 @@
 package models.autocomplete
 
 import com.google.inject.ImplementedBy
+import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
 import play.api.Environment
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsArray, JsValue, Json}
 
 import scala.io.Source
 
@@ -29,29 +30,30 @@ trait CountryDataProvider {
 }
 
 @Singleton
-class GovUkCountryDataProvider @Inject()(env: Environment) extends CountryDataProvider {
+class GovUkCountryDataProvider @Inject()(env: Environment, config: FrontendAppConfig) extends CountryDataProvider {
 
-  // TODO: use this to filter countries that aren't included in the schema
-  lazy val countryCodes: Set[String] = Set()
-
-  private val resourcePath = "public/location-autocomplete-canonical-list.json"
+  // Data taken from trusts-frontend for consistency
+  private val countriesPath = config.countryCanonicalList
+  // Valid country codes as defined by API#1306_Request_Schema-v0.4.0.json
+  private val validCodesPath = config.countryDesCodes
 
   private def stripCode(value: String): String = value.substring(value.indexOf(":") + 1)
 
   private def isEncoded(value: String): Boolean = value.indexOf(":") > -1
 
-  private def getJson: Option[JsValue] = env.resourceAsStream(resourcePath) map { stream =>
+  lazy val countryCodes: Set[String] = env.resourceAsStream(validCodesPath).map(stream =>
+    Json.parse(Source.fromInputStream(stream).mkString).as[Set[String]]).getOrElse(Set.empty)
+
+  lazy val json: Option[JsValue] = env.resourceAsStream(countriesPath) map { stream =>
     Json.parse(Source.fromInputStream(stream).mkString)
   }
 
-  override def fetch: Option[Seq[NameValuePair]] = getJson map { j =>
+  override def fetch: Option[Seq[NameValuePair]] = json map { j =>
     j.as[Seq[NameValuePair]] map {
       case n@NameValuePair(_, value) if isEncoded(value) => n.copy(value = stripCode(value))
       case n => n
+    } collect {
+      case n if countryCodes.contains(n.value.toUpperCase()) => n
     }
-    // TODO: Uncomment this to filter by country codes
-    //    collect {
-    //    //      case n if countryCodes.contains(n.value.toUpperCase()) => n
-    //    //    }
   }
 }

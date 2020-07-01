@@ -23,7 +23,7 @@ import models.Mode
 import navigation.Navigator
 import pages.WhatIsCountryOfNationalityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{Json}
+import play.api.libs.json.{JsBoolean, JsNull, JsString, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import renderer.Renderer
 import repositories.SessionRepository
@@ -51,7 +51,10 @@ class WhatIsCountryOfNationalityController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(WhatIsCountryOfNationalityPage) match {
+
+      val existingValue = request.userAnswers.get(WhatIsCountryOfNationalityPage)
+
+      val preparedForm = existingValue match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -59,7 +62,7 @@ class WhatIsCountryOfNationalityController @Inject()(
       val json = Json.obj(
         "form" -> preparedForm,
         "mode" -> mode,
-        "countries" -> countries(request2Messages(request))
+        "countries" -> countries(messages = request2Messages(request), selected = existingValue)
       )
 
       renderer.render("whatIsCountryOfNationality.njk", json).map(Ok(_))

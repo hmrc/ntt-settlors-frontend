@@ -17,17 +17,21 @@
 package controllers
 
 import play.api.i18n.Messages
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsBoolean, JsObject, JsValue, Json}
 import services.CountryService
 
 trait CountryLookup {
 
   val countryService: CountryService
+  private val selectedField:(String, JsValue) = ("selected", JsBoolean(true))
 
   private def getMsg(messages: Messages, defaultMessage:Option[String]):String =
     defaultMessage.map(msg => messages(msg)).getOrElse("")
 
-  def countries(messages: Messages, defaultMessage:Option[String] = None): Seq[JsObject] =
+  def countries(messages: Messages, selected: Option[String] = None, defaultMessage:Option[String] = None): Seq[JsObject] =
     Seq(Json.obj("value" -> "", "text" -> getMsg(messages, defaultMessage))) ++
-    countryService.getCountries.getOrElse(Seq.empty).map(nv => {Json.obj(("value", nv.value), ("text", nv.name))})
+    countryService.getCountries.getOrElse(Seq.empty).map(nv => {
+      val json = Json.obj(("value", nv.value), ("text", nv.name))
+      selected.map(s => if(nv.value == s) json + selectedField else json).getOrElse(json)
+    })
 }
