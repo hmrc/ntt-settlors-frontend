@@ -6,11 +6,11 @@ echo "Applying migration DoYouKnowDateOfDeath"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /doYouKnowDateOfDeath                        controllers.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /doYouKnowDateOfDeath                        controllers.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /doYouKnowDateOfDeath                        controllers.willtrust.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /doYouKnowDateOfDeath                        controllers.willtrust.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeDoYouKnowDateOfDeath                  controllers.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeDoYouKnowDateOfDeath                  controllers.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeDoYouKnowDateOfDeath                  controllers.willtrust.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeDoYouKnowDateOfDeath                  controllers.willtrust.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

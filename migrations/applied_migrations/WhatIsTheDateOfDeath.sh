@@ -6,11 +6,11 @@ echo "Applying migration WhatIsTheDateOfDeath"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whatIsTheDateOfDeath                  controllers.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whatIsTheDateOfDeath                  controllers.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whatIsTheDateOfDeath                  controllers.willtrust.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whatIsTheDateOfDeath                  controllers.willtrust.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatIsTheDateOfDeath                        controllers.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatIsTheDateOfDeath                        controllers.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatIsTheDateOfDeath                        controllers.willtrust.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatIsTheDateOfDeath                        controllers.willtrust.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -47,7 +47,7 @@ class IndexControllerSpec extends SpecBase {
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), any())(any())
 
-      templateCaptor.getValue mustEqual "index.njk"
+      templateCaptor.getValue mustEqual "will-index.njk"
 
       application.stop()
     }

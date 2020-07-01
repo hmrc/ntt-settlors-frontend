@@ -17,14 +17,16 @@ lazy val root = (project in file("."))
   .settings(majorVersion := 0)
   .settings(
     name := appName,
-    RoutesKeys.routesImport += "models._",
+    RoutesKeys.routesImport ++= Seq("models._", "controllers._", "controllers.willtrust._", "controllers.livingsettlor._"),
     TwirlKeys.templateImports ++= Seq(
       "play.twirl.api.HtmlFormat",
       "play.twirl.api.HtmlFormat._",
       "uk.gov.hmrc.play.views.html.helpers._",
       "uk.gov.hmrc.play.views.html.layouts._",
       "models.Mode",
-      "controllers.routes._"
+      "controllers.routes._",
+      "controllers.willtrust.routes._",
+      "controllers.livingsettlor.routes._"
     ),
     PlayKeys.playDefaultPort := 9000,
     ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*handlers.*;.*repositories.*;" +

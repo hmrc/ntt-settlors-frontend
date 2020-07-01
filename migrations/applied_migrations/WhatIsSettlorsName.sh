@@ -6,11 +6,11 @@ echo "Applying migration WhatIsSettlorsName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whatIsSettlorsName                        controllers.WhatIsSettlorsNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whatIsSettlorsName                        controllers.WhatIsSettlorsNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whatIsSettlorsName                        controllers.willtrust.WhatIsSettlorsNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whatIsSettlorsName                        controllers.willtrust.WhatIsSettlorsNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatIsSettlorsName                  controllers.WhatIsSettlorsNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatIsSettlorsName                  controllers.WhatIsSettlorsNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatIsSettlorsName                  controllers.willtrust.WhatIsSettlorsNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatIsSettlorsName                  controllers.willtrust.WhatIsSettlorsNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

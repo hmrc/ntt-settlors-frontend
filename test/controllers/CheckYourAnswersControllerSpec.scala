@@ -50,7 +50,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      templateCaptor.getValue mustEqual "check-your-answers.njk"
+      templateCaptor.getValue mustEqual "check-your-answers-living.njk"
 
       application.stop()
     }

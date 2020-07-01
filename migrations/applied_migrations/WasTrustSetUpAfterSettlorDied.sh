@@ -6,11 +6,11 @@ echo "Applying migration WasTrustSetUpAfterSettlorDied"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /wasTrustSetUpAfterSettlorDied                        controllers.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /wasTrustSetUpAfterSettlorDied                        controllers.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /wasTrustSetUpAfterSettlorDied                        controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /wasTrustSetUpAfterSettlorDied                        controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWasTrustSetUpAfterSettlorDied                  controllers.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWasTrustSetUpAfterSettlorDied                  controllers.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWasTrustSetUpAfterSettlorDied                  controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWasTrustSetUpAfterSettlorDied                  controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

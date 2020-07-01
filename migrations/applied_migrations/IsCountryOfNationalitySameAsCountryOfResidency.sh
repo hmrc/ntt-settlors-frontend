@@ -6,11 +6,11 @@ echo "Applying migration IsCountryOfNationalitySameAsCountryOfResidency"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /isCountryOfNationalitySameAsCountryOfResidency                        controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /isCountryOfNationalitySameAsCountryOfResidency                        controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /isCountryOfNationalitySameAsCountryOfResidency                        controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /isCountryOfNationalitySameAsCountryOfResidency                        controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

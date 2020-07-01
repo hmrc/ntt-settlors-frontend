@@ -10,6 +10,7 @@ site.edit.hidden = Change {0}
 site.no = No
 site.yes = Yes
 site.continue = Continue
+site.save.continue = Save and Continue
 site.service_name = ntt-settlors-frontend
 site.textarea.char_limit = (Limit is {0} characters)
 site.title.suffix = - ntt-settlors-frontend - GOV.UK
@@ -37,8 +38,12 @@ phaseBanner.3 = will help us to improve it.
 checkYourAnswers.title = Check your answers
 checkYourAnswers.heading = Check your answers
 
-index.title = ntt-settlors-frontend
-index.heading = ntt-settlors-frontend
+index.will.title = Will trust journey
+index.will.heading = Will trust journey
+
+index.living.title = Living settlor journey
+index.living.heading = Living settlor journey
+
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
 session_expired.title = For your security, this service has been reset
@@ -210,3 +215,45 @@ whatIsTheDateOfDeath.error.invalid = Enter a real date of death
 
 selectcountry = Select a country
 
+
+isSettlorIndividualOrBusiness.title = Is the settlor an individual or a business?
+isSettlorIndividualOrBusiness.heading = Is the settlor an individual or a business?
+isSettlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
+isSettlorIndividualOrBusiness.error.required = Select yes if the settlor an individual or a business
+
+isSettlorLegallyIncapable.title = Is the settlor legally incapable?
+isSettlorLegallyIncapable.heading = Is the settlor legally incapable?
+isSettlorLegallyIncapable.checkYourAnswersLabel = Is the settlor legally incapable?
+isSettlorLegallyIncapable.error.required = Select yes if the settlor legally incapable
+
+whatIsBusinessName.title = What is the business's name?
+whatIsBusinessName.heading = What is the business's name?
+whatIsBusinessName.checkYourAnswersLabel = What is the business's name?
+whatIsBusinessName.error.required = Enter the business's name
+whatIsBusinessName.error.length = The business's name must be 100 characters or less
+
+whatIsCountryOfHeadOffice.title = What is the country in which the head office is based?
+whatIsCountryOfHeadOffice.heading = What is the country in which the head office is based?
+whatIsCountryOfHeadOffice.checkYourAnswersLabel = What is the country in which the head office is based?
+whatIsCountryOfHeadOffice.error.required = Enter the country in which the head office is based
+whatIsCountryOfHeadOffice.error.length = The country must be 10 characters or less
+
+doYouKnowCountryOfHeadOffice.title = Do you know the country in which the head office is based?
+doYouKnowCountryOfHeadOffice.heading = Do you know the country in which the head office is based?
+doYouKnowCountryOfHeadOffice.checkYourAnswersLabel = Do you know the country in which the head office is based?
+doYouKnowCountryOfHeadOffice.error.required = Select yes if you know the country in which the head office is based
+
+toRemove.startWillTrust = Start Will Trust Journey
+toRemove.startLivingSettlor = Start Living Settlor Journey
+
+settlorlist.title = You have added x settlors
+settlorlist.heading = You have added x settlors
+settlorlist.completed = Completed
+settlorlist.incomplete = Incomplete
+
+settlorlist.addAnother = Do you want to add another settlor?
+settlorlist.yes.now = Yes, I want to add them now
+settlorlist.yes.later = Yes, I want to add them later
+settlorlist.no = No, I have added all of the settlors
+
+settlorlist.error.required = Select whether you want to add another settlor

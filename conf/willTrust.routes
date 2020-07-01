@@ -1,0 +1,62 @@
+# microservice specific routes
+
+GET        /                                            controllers.willtrust.IndexController.onPageLoad
+POST       /                                            controllers.willtrust.IndexController.onSubmit
+
+GET        /check-your-answers                          controllers.willtrust.CheckYourAnswersController.onPageLoad
+POST       /check-your-answers                          controllers.willtrust.CheckYourAnswersController.onSubmit
+
+GET        /doYouKnowCountryOfNationality                        controllers.willtrust.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowCountryOfNationality                        controllers.willtrust.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowCountryOfNationality                  controllers.willtrust.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowCountryOfNationality                  controllers.willtrust.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowCountryOfResidency                        controllers.willtrust.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowCountryOfResidency                        controllers.willtrust.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowCountryOfResidency                  controllers.willtrust.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowCountryOfResidency                  controllers.willtrust.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowDateOfBirth                        controllers.willtrust.DoYouKnowDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowDateOfBirth                        controllers.willtrust.DoYouKnowDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowDateOfBirth                  controllers.willtrust.DoYouKnowDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowDateOfBirth                  controllers.willtrust.DoYouKnowDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowDateOfDeath                        controllers.willtrust.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowDateOfDeath                        controllers.willtrust.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowDateOfDeath                  controllers.willtrust.DoYouKnowDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowDateOfDeath                  controllers.willtrust.DoYouKnowDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isCountryOfNationalitySameAsCountryOfResidency                        controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /isCountryOfNationalitySameAsCountryOfResidency                        controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsCountryOfNationalitySameAsCountryOfResidency                  controllers.willtrust.IsCountryOfNationalitySameAsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /wasTrustSetUpAfterSettlorDied                        controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = NormalMode)
+POST       /wasTrustSetUpAfterSettlorDied                        controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWasTrustSetUpAfterSettlorDied                  controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWasTrustSetUpAfterSettlorDied                  controllers.willtrust.WasTrustSetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsCountryOfResidency                        controllers.willtrust.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsCountryOfResidency                        controllers.willtrust.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsCountryOfResidency                  controllers.willtrust.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsCountryOfResidency                  controllers.willtrust.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsSettlorsName                        controllers.willtrust.WhatIsSettlorsNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsSettlorsName                        controllers.willtrust.WhatIsSettlorsNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsSettlorsName                  controllers.willtrust.WhatIsSettlorsNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsSettlorsName                  controllers.willtrust.WhatIsSettlorsNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsTheDateOfBirth                  controllers.willtrust.WhatIsTheDateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsTheDateOfBirth                  controllers.willtrust.WhatIsTheDateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsTheDateOfBirth                        controllers.willtrust.WhatIsTheDateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsTheDateOfBirth                        controllers.willtrust.WhatIsTheDateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsTheDateOfDeath                  controllers.willtrust.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsTheDateOfDeath                  controllers.willtrust.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsTheDateOfDeath                        controllers.willtrust.WhatIsTheDateOfDeathController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsTheDateOfDeath                        controllers.willtrust.WhatIsTheDateOfDeathController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatIsCountryOfNationality                        controllers.willtrust.WhatIsCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsCountryOfNationality                        controllers.willtrust.WhatIsCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsCountryOfNationality                  controllers.willtrust.WhatIsCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsCountryOfNationality                  controllers.willtrust.WhatIsCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)

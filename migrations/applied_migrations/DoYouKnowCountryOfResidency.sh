@@ -6,11 +6,11 @@ echo "Applying migration DoYouKnowCountryOfResidency"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /doYouKnowCountryOfResidency                        controllers.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /doYouKnowCountryOfResidency                        controllers.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /doYouKnowCountryOfResidency                        controllers.willtrust.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /doYouKnowCountryOfResidency                        controllers.willtrust.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeDoYouKnowCountryOfResidency                  controllers.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeDoYouKnowCountryOfResidency                  controllers.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeDoYouKnowCountryOfResidency                  controllers.willtrust.DoYouKnowCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeDoYouKnowCountryOfResidency                  controllers.willtrust.DoYouKnowCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

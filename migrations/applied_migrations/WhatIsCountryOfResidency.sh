@@ -6,11 +6,11 @@ echo "Applying migration WhatIsCountryOfResidency"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whatIsCountryOfResidency                        controllers.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whatIsCountryOfResidency                        controllers.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whatIsCountryOfResidency                        controllers.willtrust.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whatIsCountryOfResidency                        controllers.willtrust.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhatIsCountryOfResidency                  controllers.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhatIsCountryOfResidency                  controllers.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhatIsCountryOfResidency                  controllers.willtrust.WhatIsCountryOfResidencyController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhatIsCountryOfResidency                  controllers.willtrust.WhatIsCountryOfResidencyController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

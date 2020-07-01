@@ -18,21 +18,93 @@ package utils
 
 import java.time.format.DateTimeFormatter
 
-import controllers.routes
+import controllers.willtrust.{routes => willRoutes}
+import controllers.livingsettlor.{routes => livingRoutes}
 import models.{CheckMode, Name, UserAnswers}
 import pages._
 import play.api.i18n.{Messages, MessagesApi}
 import CheckYourAnswersHelper._
-import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import play.api.mvc.MessagesControllerComponents
-import renderer.Renderer
 import services.CountryService
 import uk.gov.hmrc.viewmodels._
 import uk.gov.hmrc.viewmodels.SummaryList._
 import uk.gov.hmrc.viewmodels.Text.Literal
 
 class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: CountryService )(implicit messages: Messages) {
+
+  def doYouKnowCountryOfHeadOffice: Option[Row] = userAnswers.get(DoYouKnowCountryOfHeadOfficePage) map {
+    answer =>
+      Row(
+        key     = Key(msg"doYouKnowCountryOfHeadOffice.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
+        value   = Value(yesOrNo(answer)),
+        actions = List(
+          Action(
+            content            = msg"site.edit",
+            href               = livingRoutes.DoYouKnowCountryOfHeadOfficeController.onPageLoad(CheckMode).url,
+            visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"doYouKnowCountryOfHeadOffice.checkYourAnswersLabel"))
+          )
+        )
+      )
+  }
+
+  def whatIsCountryOfHeadOffice: Option[Row] = userAnswers.get(WhatIsCountryOfHeadOfficePage) map {
+    answer =>
+      Row(
+        key     = Key(msg"whatIsCountryOfHeadOffice.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
+        value   = Value(country(answer)),
+        actions = List(
+          Action(
+            content            = msg"site.edit",
+            href               = livingRoutes.WhatIsCountryOfHeadOfficeController.onPageLoad(CheckMode).url,
+            visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsCountryOfHeadOffice.checkYourAnswersLabel"))
+          )
+        )
+      )
+  }
+
+  def whatIsBusinessName: Option[Row] = userAnswers.get(WhatIsBusinessNamePage) map {
+    answer =>
+      Row(
+        key     = Key(msg"whatIsBusinessName.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
+        value   = Value(lit"$answer"),
+        actions = List(
+          Action(
+            content            = msg"site.edit",
+            href               = livingRoutes.WhatIsBusinessNameController.onPageLoad(CheckMode).url,
+            visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsBusinessName.checkYourAnswersLabel"))
+          )
+        )
+      )
+  }
+
+  def isSettlorLegallyIncapable: Option[Row] = userAnswers.get(IsSettlorLegallyIncapablePage) map {
+    answer =>
+      Row(
+        key     = Key(msg"isSettlorLegallyIncapable.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
+        value   = Value(yesOrNo(answer)),
+        actions = List(
+          Action(
+            content            = msg"site.edit",
+            href               = livingRoutes.IsSettlorLegallyIncapableController.onPageLoad(CheckMode).url,
+            visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"isSettlorLegallyIncapable.checkYourAnswersLabel"))
+          )
+        )
+      )
+  }
+
+  def isSettlorIndividualOrBusiness: Option[Row] = userAnswers.get(IsSettlorIndividualOrBusinessPage) map {
+    answer =>
+      Row(
+        key     = Key(msg"isSettlorIndividualOrBusiness.checkYourAnswersLabel", classes = Seq("govuk-!-width-one-half")),
+        value   = Value(yesOrNo(answer)),
+        actions = List(
+          Action(
+            content            = msg"site.edit",
+            href               = livingRoutes.IsSettlorIndividualOrBusinessController.onPageLoad(CheckMode).url,
+            visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"isSettlorIndividualOrBusiness.checkYourAnswersLabel"))
+          )
+        )
+      )
+  }
 
   def whatIsCountryOfNationality: Option[Row] = userAnswers.get(WhatIsCountryOfNationalityPage) map {
     answer =>
@@ -42,7 +114,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WhatIsCountryOfNationalityController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WhatIsCountryOfNationalityController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsCountryOfNationality.checkYourAnswersLabel"))
           )
         )
@@ -57,7 +129,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WhatIsTheDateOfDeathController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WhatIsTheDateOfDeathController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsTheDateOfDeath.checkYourAnswersLabel"))
           )
         )
@@ -72,7 +144,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WhatIsTheDateOfBirthController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WhatIsTheDateOfBirthController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsTheDateOfBirth.checkYourAnswersLabel"))
           )
         )
@@ -87,7 +159,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WhatIsSettlorsNameController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WhatIsSettlorsNameController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsSettlorsName.checkYourAnswersLabel"))
           )
         )
@@ -102,7 +174,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WhatIsCountryOfResidencyController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WhatIsCountryOfResidencyController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"whatIsCountryOfResidency.checkYourAnswersLabel"))
           )
         )
@@ -117,7 +189,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(CheckMode).url,
+            href               = willRoutes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"wasTrustSetUpAfterSettlorDied.checkYourAnswersLabel"))
           )
         )
@@ -132,7 +204,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(CheckMode).url,
+            href               = willRoutes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"isCountryOfNationalitySameAsCountryOfResidency.checkYourAnswersLabel"))
           )
         )
@@ -147,7 +219,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.DoYouKnowDateOfDeathController.onPageLoad(CheckMode).url,
+            href               = willRoutes.DoYouKnowDateOfDeathController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"doYouKnowDateOfDeath.checkYourAnswersLabel"))
           )
         )
@@ -162,7 +234,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.DoYouKnowDateOfBirthController.onPageLoad(CheckMode).url,
+            href               = willRoutes.DoYouKnowDateOfBirthController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"doYouKnowDateOfBirth.checkYourAnswersLabel"))
           )
         )
@@ -177,7 +249,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.DoYouKnowCountryOfResidencyController.onPageLoad(CheckMode).url,
+            href               = willRoutes.DoYouKnowCountryOfResidencyController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"doYouKnowCountryOfResidency.checkYourAnswersLabel"))
           )
         )
@@ -192,7 +264,7 @@ class CheckYourAnswersHelper (userAnswers: UserAnswers,  countryService: Country
         actions = List(
           Action(
             content            = msg"site.edit",
-            href               = routes.DoYouKnowCountryOfNationalityController.onPageLoad(CheckMode).url,
+            href               = willRoutes.DoYouKnowCountryOfNationalityController.onPageLoad(CheckMode).url,
             visuallyHiddenText = Some(msg"site.edit.hidden".withArgs(msg"doYouKnowCountryOfNationality.checkYourAnswersLabel"))
           )
         )

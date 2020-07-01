@@ -6,11 +6,11 @@ echo "Applying migration DoYouKnowCountryOfNationality"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /doYouKnowCountryOfNationality                        controllers.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /doYouKnowCountryOfNationality                        controllers.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /doYouKnowCountryOfNationality                        controllers.willtrust.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /doYouKnowCountryOfNationality                        controllers.willtrust.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeDoYouKnowCountryOfNationality                  controllers.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeDoYouKnowCountryOfNationality                  controllers.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeDoYouKnowCountryOfNationality                  controllers.willtrust.DoYouKnowCountryOfNationalityController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeDoYouKnowCountryOfNationality                  controllers.willtrust.DoYouKnowCountryOfNationalityController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

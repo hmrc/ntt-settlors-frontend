@@ -24,6 +24,46 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
+  implicit lazy val arbitraryDoYouKnowCountryOfHeadOfficeUserAnswersEntry: Arbitrary[(DoYouKnowCountryOfHeadOfficePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[DoYouKnowCountryOfHeadOfficePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryWhatIsCountryOfHeadOfficeUserAnswersEntry: Arbitrary[(WhatIsCountryOfHeadOfficePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WhatIsCountryOfHeadOfficePage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryWhatIsBusinessNameUserAnswersEntry: Arbitrary[(WhatIsBusinessNamePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WhatIsBusinessNamePage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsSettlorLegallyIncapableUserAnswersEntry: Arbitrary[(IsSettlorLegallyIncapablePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsSettlorLegallyIncapablePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
+  implicit lazy val arbitraryIsSettlorIndividualOrBusinessUserAnswersEntry: Arbitrary[(IsSettlorIndividualOrBusinessPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsSettlorIndividualOrBusinessPage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryWhatIsCountryOfNationalityUserAnswersEntry: Arbitrary[(WhatIsCountryOfNationalityPage.type, JsValue)] =
     Arbitrary {
       for {
