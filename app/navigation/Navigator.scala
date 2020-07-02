@@ -29,25 +29,25 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case  WillTrustJourney => _ => willRoutes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(NormalMode)
+    case  WillTrustJourney                  => _ => willRoutes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(NormalMode)
     case  WasTrustSetUpAfterSettlorDiedPage => _ => willRoutes.WhatIsSettlorsNameController.onPageLoad(NormalMode)
-    case  WhatIsSettlorsNamePage => _ => willRoutes.DoYouKnowDateOfDeathController.onPageLoad(NormalMode)
-    case  DoYouKnowDateOfDeathPage => _ => willRoutes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode)
-    case  WhatIsTheDateOfDeathPage => _ => willRoutes.DoYouKnowDateOfBirthController.onPageLoad(NormalMode)
-    case  DoYouKnowDateOfBirthPage => _ => willRoutes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode)
-    case  WhatIsTheDateOfBirthPage => _ => willRoutes.DoYouKnowCountryOfNationalityController.onPageLoad(NormalMode)
+    case  WhatIsSettlorsNamePage            => _ => willRoutes.DoYouKnowDateOfDeathController.onPageLoad(NormalMode)
+    case  DoYouKnowDateOfDeathPage          => _ => willRoutes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode)
+    case  WhatIsTheDateOfDeathPage          => _ => willRoutes.DoYouKnowDateOfBirthController.onPageLoad(NormalMode)
+    case  DoYouKnowDateOfBirthPage          => _ => willRoutes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode)
+    case  WhatIsTheDateOfBirthPage          => _ => willRoutes.DoYouKnowCountryOfNationalityController.onPageLoad(NormalMode)
     case  DoYouKnowCountryOfNationalityPage => _ => willRoutes.WhatIsCountryOfNationalityController.onPageLoad(NormalMode)
-    case  WhatIsCountryOfNationalityPage => _ => willRoutes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode)
+    case  WhatIsCountryOfNationalityPage    => _ => willRoutes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode)
     case  IsCountryOfNationalitySameAsCountryOfResidencyPage => _ => willRoutes.DoYouKnowCountryOfResidencyController.onPageLoad(NormalMode)
-    case  DoYouKnowCountryOfResidencyPage => _ => willRoutes.WhatIsCountryOfResidencyController.onPageLoad(NormalMode)
-    case  WhatIsCountryOfResidencyPage => _ => willRoutes.CheckYourAnswersController.onPageLoad()
+    case  DoYouKnowCountryOfResidencyPage   => _ => willRoutes.WhatIsCountryOfResidencyController.onPageLoad(NormalMode)
+    case  WhatIsCountryOfResidencyPage      => _ => willRoutes.CheckYourAnswersController.onPageLoad()
 
-    case  LivingSettlorJourney => _ => livingRoutes.IsSettlorIndividualOrBusinessController.onPageLoad(NormalMode)
+    case  LivingSettlorJourney              => _ => livingRoutes.IsSettlorIndividualOrBusinessController.onPageLoad(NormalMode)
     case  IsSettlorIndividualOrBusinessPage => _ => livingRoutes.IsSettlorLegallyIncapableController.onPageLoad(NormalMode)
-    case  IsSettlorLegallyIncapablePage => _ => livingRoutes.WhatIsBusinessNameController.onPageLoad(NormalMode)
-    case  WhatIsBusinessNamePage => _ => livingRoutes.DoYouKnowCountryOfHeadOfficeController.onPageLoad(NormalMode)
-    case  DoYouKnowCountryOfHeadOfficePage => _ => livingRoutes.WhatIsCountryOfHeadOfficeController.onPageLoad(NormalMode)
-    case  WhatIsCountryOfHeadOfficePage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
+    case  IsSettlorLegallyIncapablePage     => _ => livingRoutes.WhatIsBusinessNameController.onPageLoad(NormalMode)
+    case  WhatIsBusinessNamePage            => _ => livingRoutes.DoYouKnowCountryOfHeadOfficeController.onPageLoad(NormalMode)
+    case  DoYouKnowCountryOfHeadOfficePage  => _ => livingRoutes.WhatIsCountryOfHeadOfficeController.onPageLoad(NormalMode)
+    case  WhatIsCountryOfHeadOfficePage     => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
 
     case  CheckYourAnswersPage => _ => routes.SettlorListController.onPageLoad()
   }
@@ -55,10 +55,10 @@ class Navigator @Inject()() {
   private val checkRouteMap: Page => UserAnswers => Call = {
 
     case  IsSettlorIndividualOrBusinessPage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
-    case  IsSettlorLegallyIncapablePage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
-    case  WhatIsBusinessNamePage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
-    case  DoYouKnowCountryOfHeadOfficePage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
-    case  WhatIsCountryOfHeadOfficePage => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
+    case  IsSettlorLegallyIncapablePage     => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
+    case  WhatIsBusinessNamePage            => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
+    case  DoYouKnowCountryOfHeadOfficePage  => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
+    case  WhatIsCountryOfHeadOfficePage     => _ => livingRoutes.CheckYourAnswersController.onPageLoad()
 
     case _ => _ => willRoutes.CheckYourAnswersController.onPageLoad()
   }
