@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.willtrust
 
 import base.SpecBase
-import forms.WhatIsCountryOfResidencyFormProvider
+import forms.DoYouKnowDateOfDeathFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,28 +25,28 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatIsCountryOfResidencyPage
+import pages.DoYouKnowDateOfDeathPage
 import play.api.inject.bind
-import play.api.libs.json.{JsObject, JsString, Json}
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.NunjucksSupport
+import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
 
 import scala.concurrent.Future
 
-class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class DoYouKnowDateOfDeathControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WhatIsCountryOfResidencyFormProvider()
+  val formProvider = new DoYouKnowDateOfDeathFormProvider()
   val form = formProvider()
 
-  lazy val whatIsCountryOfResidencyRoute = routes.WhatIsCountryOfResidencyController.onPageLoad(NormalMode).url
+  lazy val doYouKnowDateOfDeathRoute = routes.DoYouKnowDateOfDeathController.onPageLoad(NormalMode).url
 
-  "WhatIsCountryOfResidency Controller" - {
+  "DoYouKnowDateOfDeath Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -54,7 +54,7 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, whatIsCountryOfResidencyRoute)
+      val request = FakeRequest(GET, doYouKnowDateOfDeathRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -65,11 +65,12 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form" -> form,
-        "mode" -> NormalMode
+        "form"   -> form,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(form("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfResidency.njk"
+      templateCaptor.getValue mustEqual "doYouKnowDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -80,9 +81,9 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsCountryOfResidencyPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(DoYouKnowDateOfDeathPage, true).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, whatIsCountryOfResidencyRoute)
+      val request = FakeRequest(GET, doYouKnowDateOfDeathRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -92,14 +93,15 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(Map("value" -> "answer"))
+      val filledForm = form.bind(Map("value" -> "true"))
 
       val expectedJson = Json.obj(
-        "form" -> filledForm,
-        "mode" -> NormalMode
+        "form"   -> filledForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(filledForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfResidency.njk"
+      templateCaptor.getValue mustEqual "doYouKnowDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -120,12 +122,13 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
           .build()
 
       val request =
-        FakeRequest(POST, whatIsCountryOfResidencyRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, doYouKnowDateOfDeathRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -137,7 +140,7 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, whatIsCountryOfResidencyRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, doYouKnowDateOfDeathRoute).withFormUrlEncodedBody(("value", ""))
       val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
@@ -149,11 +152,12 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form" -> boundForm,
-        "mode" -> NormalMode
+        "form"   -> boundForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(boundForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfResidency.njk"
+      templateCaptor.getValue mustEqual "doYouKnowDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -163,13 +167,13 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, whatIsCountryOfResidencyRoute)
+      val request = FakeRequest(GET, doYouKnowDateOfDeathRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -179,14 +183,14 @@ class WhatIsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar 
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, whatIsCountryOfResidencyRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, doYouKnowDateOfDeathRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

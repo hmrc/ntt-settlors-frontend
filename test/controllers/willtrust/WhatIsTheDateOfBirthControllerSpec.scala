@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.willtrust
+
+import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.IsCountryOfNationalitySameAsCountryOfResidencyFormProvider
+import forms.WhatIsTheDateOfBirthFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,28 +27,43 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.IsCountryOfNationalitySameAsCountryOfResidencyPage
+import pages.WhatIsTheDateOfBirthPage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
+import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
 
 import scala.concurrent.Future
 
-class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+
+  val formProvider = new WhatIsTheDateOfBirthFormProvider()
+  private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IsCountryOfNationalitySameAsCountryOfResidencyFormProvider()
-  val form = formProvider()
+  val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val isCountryOfNationalitySameAsCountryOfResidencyRoute = routes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode).url
+  lazy val whatIsTheDateOfBirthRoute = routes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode).url
 
-  "IsCountryOfNationalitySameAsCountryOfResidency Controller" - {
+  override val emptyUserAnswers = UserAnswers(userAnswersId)
+
+  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, whatIsTheDateOfBirthRoute)
+
+  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+    FakeRequest(POST, whatIsTheDateOfBirthRoute)
+      .withFormUrlEncodedBody(
+        "value.day"   -> validAnswer.getDayOfMonth.toString,
+        "value.month" -> validAnswer.getMonthValue.toString,
+        "value.year"  -> validAnswer.getYear.toString
+      )
+
+  "WhatIsTheDateOfBirth Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -54,23 +71,24 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
+      val viewModel = DateInput.localDate(form("value"))
+
       val expectedJson = Json.obj(
-        "form"   -> form,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(form("value"))
+        "form" -> form,
+        "mode" -> NormalMode,
+        "date" -> viewModel
       )
 
-      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
+      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -81,27 +99,34 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsCountryOfNationalitySameAsCountryOfResidencyPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheDateOfBirthPage, validAnswer).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(Map("value" -> "true"))
-
-      val expectedJson = Json.obj(
-        "form"   -> filledForm,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(filledForm("value"))
+      val filledForm = form.bind(
+        Map(
+          "value.day"   -> validAnswer.getDayOfMonth.toString,
+          "value.month" -> validAnswer.getMonthValue.toString,
+          "value.year"  -> validAnswer.getYear.toString
+        )
       )
 
-      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
+      val viewModel = DateInput.localDate(filledForm("value"))
+
+      val expectedJson = Json.obj(
+        "form" -> filledForm,
+        "mode" -> NormalMode,
+        "date" -> viewModel
+      )
+
+      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -121,11 +146,7 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
           )
           .build()
 
-      val request =
-        FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute)
-          .withFormUrlEncodedBody(("value", "true"))
-
-      val result = route(application, request).value
+      val result = route(application, postRequest).value
 
       status(result) mustEqual SEE_OTHER
 
@@ -140,8 +161,8 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute).withFormUrlEncodedBody(("value", ""))
-      val boundForm = form.bind(Map("value" -> ""))
+      val request = FakeRequest(POST, whatIsTheDateOfBirthRoute).withFormUrlEncodedBody(("value", "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -151,13 +172,15 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
+      val viewModel = DateInput.localDate(boundForm("value"))
+
       val expectedJson = Json.obj(
-        "form"   -> boundForm,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(boundForm("value"))
+        "form" -> boundForm,
+        "mode" -> NormalMode,
+        "date" -> viewModel
       )
 
-      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
+      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -167,13 +190,10 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
-
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -182,15 +202,11 @@ class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecB
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute)
-          .withFormUrlEncodedBody(("value", "true"))
-
-      val result = route(application, request).value
+      val result = route(application, postRequest).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

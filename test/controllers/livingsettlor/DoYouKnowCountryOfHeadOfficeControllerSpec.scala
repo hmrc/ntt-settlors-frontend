@@ -1,7 +1,23 @@
-package controllers
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.livingsettlor
 
 import base.SpecBase
-import forms.IsSettlorIndividualOrBusinessFormProvider
+import forms.DoYouKnowCountryOfHeadOfficeFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -9,7 +25,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.IsSettlorIndividualOrBusinessPage
+import pages.DoYouKnowCountryOfHeadOfficePage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
@@ -21,16 +37,16 @@ import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
 
 import scala.concurrent.Future
 
-class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class DoYouKnowCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IsSettlorIndividualOrBusinessFormProvider()
+  val formProvider = new DoYouKnowCountryOfHeadOfficeFormProvider()
   val form = formProvider()
 
-  lazy val isSettlorIndividualOrBusinessRoute = routes.IsSettlorIndividualOrBusinessController.onPageLoad(NormalMode).url
+  lazy val doYouKnowCountryOfHeadOfficeRoute = routes.DoYouKnowCountryOfHeadOfficeController.onPageLoad(NormalMode).url
 
-  "IsSettlorIndividualOrBusiness Controller" - {
+  "DoYouKnowCountryOfHeadOffice Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -38,7 +54,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
+      val request = FakeRequest(GET, doYouKnowCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -54,7 +70,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(form("value"))
       )
 
-      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
+      templateCaptor.getValue mustEqual "doYouKnowCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -65,9 +81,9 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsSettlorIndividualOrBusinessPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(DoYouKnowCountryOfHeadOfficePage, true).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
+      val request = FakeRequest(GET, doYouKnowCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -85,7 +101,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(filledForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
+      templateCaptor.getValue mustEqual "doYouKnowCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -106,7 +122,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
           .build()
 
       val request =
-        FakeRequest(POST, isSettlorIndividualOrBusinessRoute)
+        FakeRequest(POST, doYouKnowCountryOfHeadOfficeRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -124,7 +140,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, isSettlorIndividualOrBusinessRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, doYouKnowCountryOfHeadOfficeRoute).withFormUrlEncodedBody(("value", ""))
       val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
@@ -141,7 +157,7 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(boundForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
+      templateCaptor.getValue mustEqual "doYouKnowCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -151,13 +167,13 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
+      val request = FakeRequest(GET, doYouKnowCountryOfHeadOfficeRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -167,14 +183,14 @@ class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, isSettlorIndividualOrBusinessRoute)
+        FakeRequest(POST, doYouKnowCountryOfHeadOfficeRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

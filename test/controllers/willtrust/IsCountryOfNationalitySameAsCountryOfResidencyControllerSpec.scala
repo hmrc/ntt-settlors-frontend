@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.willtrust
 
 import base.SpecBase
-import forms.WasTrustSetUpAfterSettlorDiedFormProvider
+import forms.IsCountryOfNationalitySameAsCountryOfResidencyFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,7 +25,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WasTrustSetUpAfterSettlorDiedPage
+import pages.IsCountryOfNationalitySameAsCountryOfResidencyPage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
@@ -37,16 +37,16 @@ import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
 
 import scala.concurrent.Future
 
-class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class IsCountryOfNationalitySameAsCountryOfResidencyControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WasTrustSetUpAfterSettlorDiedFormProvider()
+  val formProvider = new IsCountryOfNationalitySameAsCountryOfResidencyFormProvider()
   val form = formProvider()
 
-  lazy val wasTrustSetUpAfterSettlorDiedRoute = routes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(NormalMode).url
+  lazy val isCountryOfNationalitySameAsCountryOfResidencyRoute = routes.IsCountryOfNationalitySameAsCountryOfResidencyController.onPageLoad(NormalMode).url
 
-  "WasTrustSetUpAfterSettlorDied Controller" - {
+  "IsCountryOfNationalitySameAsCountryOfResidency Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -54,7 +54,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -70,7 +70,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(form("value"))
       )
 
-      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
+      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -81,9 +81,9 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WasTrustSetUpAfterSettlorDiedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsCountryOfNationalitySameAsCountryOfResidencyPage, true).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -101,7 +101,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(filledForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
+      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -122,7 +122,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
           .build()
 
       val request =
-        FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute)
+        FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -140,7 +140,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute).withFormUrlEncodedBody(("value", ""))
       val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
@@ -157,7 +157,7 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
         "radios" -> Radios.yesNo(boundForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
+      templateCaptor.getValue mustEqual "isCountryOfNationalitySameAsCountryOfResidency.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -167,13 +167,13 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
+      val request = FakeRequest(GET, isCountryOfNationalitySameAsCountryOfResidencyRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -183,14 +183,14 @@ class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute)
+        FakeRequest(POST, isCountryOfNationalitySameAsCountryOfResidencyRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

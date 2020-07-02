@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
-
-import java.time.{LocalDate, ZoneOffset}
+package controllers.willtrust
 
 import base.SpecBase
-import forms.WhatIsTheDateOfDeathFormProvider
+import forms.WasTrustSetUpAfterSettlorDiedFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -27,43 +25,28 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatIsTheDateOfDeathPage
+import pages.WasTrustSetUpAfterSettlorDiedPage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
+import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
 
 import scala.concurrent.Future
 
-class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
-
-  val formProvider = new WhatIsTheDateOfDeathFormProvider()
-  private def form = formProvider()
+class WasTrustSetUpAfterSettlorDiedControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val formProvider = new WasTrustSetUpAfterSettlorDiedFormProvider()
+  val form = formProvider()
 
-  lazy val whatIsTheDateOfDeathRoute = routes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode).url
+  lazy val wasTrustSetUpAfterSettlorDiedRoute = routes.WasTrustSetUpAfterSettlorDiedController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
-
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, whatIsTheDateOfDeathRoute)
-
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, whatIsTheDateOfDeathRoute)
-      .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
-      )
-
-  "WhatIsTheDateOfDeath Controller" - {
+  "WasTrustSetUpAfterSettlorDied Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -71,24 +54,23 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, getRequest).value
+      val result = route(application, request).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val viewModel = DateInput.localDate(form("value"))
-
       val expectedJson = Json.obj(
-        "form" -> form,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "form"   -> form,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(form("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
+      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -99,34 +81,27 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheDateOfDeathPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WasTrustSetUpAfterSettlorDiedPage, true).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, getRequest).value
+      val result = route(application, request).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(
-        Map(
-          "value.day"   -> validAnswer.getDayOfMonth.toString,
-          "value.month" -> validAnswer.getMonthValue.toString,
-          "value.year"  -> validAnswer.getYear.toString
-        )
-      )
-
-      val viewModel = DateInput.localDate(filledForm("value"))
+      val filledForm = form.bind(Map("value" -> "true"))
 
       val expectedJson = Json.obj(
-        "form" -> filledForm,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "form"   -> filledForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(filledForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
+      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -146,7 +121,11 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
           )
           .build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
@@ -161,8 +140,8 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, whatIsTheDateOfDeathRoute).withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val request = FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute).withFormUrlEncodedBody(("value", ""))
+      val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -172,15 +151,13 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val viewModel = DateInput.localDate(boundForm("value"))
-
       val expectedJson = Json.obj(
-        "form" -> boundForm,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "form"   -> boundForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(boundForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
+      templateCaptor.getValue mustEqual "wasTrustSetUpAfterSettlorDied.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -190,10 +167,13 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, getRequest).value
+      val request = FakeRequest(GET, wasTrustSetUpAfterSettlorDiedRoute)
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -202,11 +182,15 @@ class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, wasTrustSetUpAfterSettlorDiedRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

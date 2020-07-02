@@ -21,33 +21,57 @@ import play.api.data.FormError
 
 class WhatIsSettlorsNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "whatIsSettlorsName.error.required"
+
   val lengthKey = "whatIsSettlorsName.error.length"
   val maxLength = 100
 
   val form = new WhatIsSettlorsNameFormProvider()()
 
-  ".value" - {
+  ".firstName" - {
 
-    val fieldName = "value"
+    val field = "firstName"
+    val requiredKey = s"whatIsSettlorsName.${field}.error.required"
 
     behave like fieldThatBindsValidData(
       form,
-      fieldName,
+      field,
       stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
     behave like mandatoryField(
       form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      field,
+      requiredError = FormError(field, requiredKey)
+    )
+  }
+
+  ".middleName" - {
+
+    val field = "middleName"
+    val requiredKey = s"whatIsSettlorsName.${field}.error.required"
+
+    behave like fieldThatBindsValidData(
+      form,
+      field,
+      stringsWithMaxLength(maxLength)
+    )
+  }
+
+  ".lastName" - {
+
+    val field = "lastName"
+    val requiredKey = s"whatIsSettlorsName.${field}.error.required"
+
+    behave like fieldThatBindsValidData(
+      form,
+      field,
+      stringsWithMaxLength(maxLength)
+    )
+
+    behave like mandatoryField(
+      form,
+      field,
+      requiredError = FormError(field, requiredKey)
     )
   }
 }

@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
-
-import java.time.{LocalDate, ZoneOffset}
+package controllers.willtrust
 
 import base.SpecBase
-import forms.WhatIsTheDateOfBirthFormProvider
+import forms.WhatIsCountryOfNationalityFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -27,43 +25,28 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatIsTheDateOfBirthPage
+import pages.WhatIsCountryOfNationalityPage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
+import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.Future
 
-class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
-
-  val formProvider = new WhatIsTheDateOfBirthFormProvider()
-  private def form = formProvider()
+class WhatIsCountryOfNationalityControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val formProvider = new WhatIsCountryOfNationalityFormProvider()
+  val form = formProvider()
 
-  lazy val whatIsTheDateOfBirthRoute = routes.WhatIsTheDateOfBirthController.onPageLoad(NormalMode).url
+  lazy val whatIsCountryOfNationalityRoute = routes.WhatIsCountryOfNationalityController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
-
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, whatIsTheDateOfBirthRoute)
-
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, whatIsTheDateOfBirthRoute)
-      .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
-      )
-
-  "WhatIsTheDateOfBirth Controller" - {
+  "WhatIsCountryOfNationality Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -71,24 +54,22 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val request = FakeRequest(GET, whatIsCountryOfNationalityRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, getRequest).value
+      val result = route(application, request).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val viewModel = DateInput.localDate(form("value"))
-
       val expectedJson = Json.obj(
         "form" -> form,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfNationality.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -99,34 +80,26 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheDateOfBirthPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsCountryOfNationalityPage, "answer").success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val request = FakeRequest(GET, whatIsCountryOfNationalityRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, getRequest).value
+      val result = route(application, request).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(
-        Map(
-          "value.day"   -> validAnswer.getDayOfMonth.toString,
-          "value.month" -> validAnswer.getMonthValue.toString,
-          "value.year"  -> validAnswer.getYear.toString
-        )
-      )
-
-      val viewModel = DateInput.localDate(filledForm("value"))
+      val filledForm = form.bind(Map("value" -> "answer"))
 
       val expectedJson = Json.obj(
         "form" -> filledForm,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfNationality.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -146,10 +119,13 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
           )
           .build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, whatIsCountryOfNationalityRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -161,8 +137,8 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, whatIsTheDateOfBirthRoute).withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val request = FakeRequest(POST, whatIsCountryOfNationalityRoute).withFormUrlEncodedBody(("value", ""))
+      val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -172,15 +148,12 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val viewModel = DateInput.localDate(boundForm("value"))
-
       val expectedJson = Json.obj(
         "form" -> boundForm,
-        "mode" -> NormalMode,
-        "date" -> viewModel
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "whatIsTheDateOfBirth.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfNationality.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -190,10 +163,13 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, getRequest).value
+      val request = FakeRequest(GET, whatIsCountryOfNationalityRoute)
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -202,11 +178,15 @@ class WhatIsTheDateOfBirthControllerSpec extends SpecBase with MockitoSugar with
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, whatIsCountryOfNationalityRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

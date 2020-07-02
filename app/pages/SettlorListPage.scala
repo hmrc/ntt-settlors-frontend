@@ -16,21 +16,7 @@
 
 package pages
 
-import models.Name
-import org.scalacheck.{Arbitrary, Gen}
-import pages.behaviours.PageBehaviours
+case object SettlorListPage extends Page {
 
-
-class WhatIsSettlorsNamePageSpec extends PageBehaviours {
-
-  "WhatIsSettlorsNamePage" - {
-
-    implicit val arb: Arbitrary[Name] = Arbitrary(Gen.const(Name("firstName", Option("middleName"), "lastName")))
-
-    beRetrievable[Name](WhatIsSettlorsNamePage)
-
-    beSettable[Name](WhatIsSettlorsNamePage)
-
-    beRemovable[Name](WhatIsSettlorsNamePage)
-  }
+  override def toString: String = "settlorListPage"
 }

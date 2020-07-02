@@ -1,7 +1,25 @@
-package controllers
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.willtrust
+
+import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.WhatIsCountryOfHeadOfficeFormProvider
+import forms.WhatIsTheDateOfDeathFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -9,28 +27,43 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatIsCountryOfHeadOfficePage
+import pages.WhatIsTheDateOfDeathPage
 import play.api.inject.bind
-import play.api.libs.json.{JsObject, JsString, Json}
-import play.api.mvc.Call
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.NunjucksSupport
+import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
 
 import scala.concurrent.Future
 
-class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class WhatIsTheDateOfDeathControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+
+  val formProvider = new WhatIsTheDateOfDeathFormProvider()
+  private def form = formProvider()
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WhatIsCountryOfHeadOfficeFormProvider()
-  val form = formProvider()
+  val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val whatIsCountryOfHeadOfficeRoute = routes.WhatIsCountryOfHeadOfficeController.onPageLoad(NormalMode).url
+  lazy val whatIsTheDateOfDeathRoute = routes.WhatIsTheDateOfDeathController.onPageLoad(NormalMode).url
 
-  "WhatIsCountryOfHeadOffice Controller" - {
+  override val emptyUserAnswers = UserAnswers(userAnswersId)
+
+  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, whatIsTheDateOfDeathRoute)
+
+  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+    FakeRequest(POST, whatIsTheDateOfDeathRoute)
+      .withFormUrlEncodedBody(
+        "value.day"   -> validAnswer.getDayOfMonth.toString,
+        "value.month" -> validAnswer.getMonthValue.toString,
+        "value.year"  -> validAnswer.getYear.toString
+      )
+
+  "WhatIsTheDateOfDeath Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -38,22 +71,24 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
+      val viewModel = DateInput.localDate(form("value"))
+
       val expectedJson = Json.obj(
         "form" -> form,
-        "mode" -> NormalMode
+        "mode" -> NormalMode,
+        "date" -> viewModel
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
+      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -64,26 +99,34 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsCountryOfHeadOfficePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsTheDateOfDeathPage, validAnswer).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual OK
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(Map("value" -> "answer"))
+      val filledForm = form.bind(
+        Map(
+          "value.day"   -> validAnswer.getDayOfMonth.toString,
+          "value.month" -> validAnswer.getMonthValue.toString,
+          "value.year"  -> validAnswer.getYear.toString
+        )
+      )
+
+      val viewModel = DateInput.localDate(filledForm("value"))
 
       val expectedJson = Json.obj(
         "form" -> filledForm,
-        "mode" -> NormalMode
+        "mode" -> NormalMode,
+        "date" -> viewModel
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
+      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -103,13 +146,10 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
           )
           .build()
 
-      val request =
-        FakeRequest(POST, whatIsCountryOfHeadOfficeRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
-
-      val result = route(application, request).value
+      val result = route(application, postRequest).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -121,8 +161,8 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, whatIsCountryOfHeadOfficeRoute).withFormUrlEncodedBody(("value", ""))
-      val boundForm = form.bind(Map("value" -> ""))
+      val request = FakeRequest(POST, whatIsTheDateOfDeathRoute).withFormUrlEncodedBody(("value", "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -132,12 +172,15 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
+      val viewModel = DateInput.localDate(boundForm("value"))
+
       val expectedJson = Json.obj(
         "form" -> boundForm,
-        "mode" -> NormalMode
+        "mode" -> NormalMode,
+        "date" -> viewModel
       )
 
-      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
+      templateCaptor.getValue mustEqual "whatIsTheDateOfDeath.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -147,13 +190,10 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
-
-      val result = route(application, request).value
+      val result = route(application, getRequest).value
 
       status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -162,15 +202,11 @@ class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, whatIsCountryOfHeadOfficeRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
-
-      val result = route(application, request).value
+      val result = route(application, postRequest).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

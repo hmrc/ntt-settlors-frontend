@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.livingsettlor
 
 import base.SpecBase
-import forms.WhatIsSettlorsNameFormProvider
+import forms.IsSettlorIndividualOrBusinessFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,28 +25,28 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatIsSettlorsNamePage
+import pages.IsSettlorIndividualOrBusinessPage
 import play.api.inject.bind
-import play.api.libs.json.{JsObject, JsString, Json}
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.NunjucksSupport
+import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
 
 import scala.concurrent.Future
 
-class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class IsSettlorIndividualOrBusinessControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new WhatIsSettlorsNameFormProvider()
+  val formProvider = new IsSettlorIndividualOrBusinessFormProvider()
   val form = formProvider()
 
-  lazy val whatIsSettlorsNameRoute = routes.WhatIsSettlorsNameController.onPageLoad(NormalMode).url
+  lazy val isSettlorIndividualOrBusinessRoute = routes.IsSettlorIndividualOrBusinessController.onPageLoad(NormalMode).url
 
-  "WhatIsSettlorsName Controller" - {
+  "IsSettlorIndividualOrBusiness Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -54,7 +54,7 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, whatIsSettlorsNameRoute)
+      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -65,11 +65,12 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form" -> form,
-        "mode" -> NormalMode
+        "form"   -> form,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(form("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsSettlorsName.njk"
+      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -80,9 +81,9 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatIsSettlorsNamePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsSettlorIndividualOrBusinessPage, true).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, whatIsSettlorsNameRoute)
+      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -92,14 +93,15 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(Map("value" -> "answer"))
+      val filledForm = form.bind(Map("value" -> "true"))
 
       val expectedJson = Json.obj(
-        "form" -> filledForm,
-        "mode" -> NormalMode
+        "form"   -> filledForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(filledForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsSettlorsName.njk"
+      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -120,12 +122,13 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
           .build()
 
       val request =
-        FakeRequest(POST, whatIsSettlorsNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, isSettlorIndividualOrBusinessRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -137,7 +140,7 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, whatIsSettlorsNameRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, isSettlorIndividualOrBusinessRoute).withFormUrlEncodedBody(("value", ""))
       val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
@@ -149,11 +152,12 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form" -> boundForm,
-        "mode" -> NormalMode
+        "form"   -> boundForm,
+        "mode"   -> NormalMode,
+        "radios" -> Radios.yesNo(boundForm("value"))
       )
 
-      templateCaptor.getValue mustEqual "whatIsSettlorsName.njk"
+      templateCaptor.getValue mustEqual "isSettlorIndividualOrBusiness.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -163,13 +167,13 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, whatIsSettlorsNameRoute)
+      val request = FakeRequest(GET, isSettlorIndividualOrBusinessRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -179,14 +183,14 @@ class WhatIsSettlorsNameControllerSpec extends SpecBase with MockitoSugar with N
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, whatIsSettlorsNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, isSettlorIndividualOrBusinessRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

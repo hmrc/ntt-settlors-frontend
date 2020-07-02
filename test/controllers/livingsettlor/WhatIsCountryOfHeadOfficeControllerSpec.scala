@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.livingsettlor
 
 import base.SpecBase
-import forms.DoYouKnowCountryOfNationalityFormProvider
+import forms.WhatIsCountryOfHeadOfficeFormProvider
 import matchers.JsonMatchers
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,7 +25,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.DoYouKnowCountryOfNationalityPage
+import pages.WhatIsCountryOfHeadOfficePage
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
@@ -33,20 +33,20 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import repositories.SessionRepository
-import uk.gov.hmrc.viewmodels.{NunjucksSupport, Radios}
+import uk.gov.hmrc.viewmodels.NunjucksSupport
 
 import scala.concurrent.Future
 
-class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
+class WhatIsCountryOfHeadOfficeControllerSpec extends SpecBase with MockitoSugar with NunjucksSupport with JsonMatchers {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new DoYouKnowCountryOfNationalityFormProvider()
+  val formProvider = new WhatIsCountryOfHeadOfficeFormProvider()
   val form = formProvider()
 
-  lazy val doYouKnowCountryOfNationalityRoute = routes.DoYouKnowCountryOfNationalityController.onPageLoad(NormalMode).url
+  lazy val whatIsCountryOfHeadOfficeRoute = routes.WhatIsCountryOfHeadOfficeController.onPageLoad(NormalMode).url
 
-  "DoYouKnowCountryOfNationality Controller" - {
+  "WhatIsCountryOfHeadOffice Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -54,7 +54,7 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(GET, doYouKnowCountryOfNationalityRoute)
+      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -65,12 +65,11 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form"   -> form,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(form("value"))
+        "form" -> form,
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "doYouKnowCountryOfNationality.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -81,9 +80,9 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
       when(mockRenderer.render(any(), any())(any()))
         .thenReturn(Future.successful(Html("")))
 
-      val userAnswers = UserAnswers(userAnswersId).set(DoYouKnowCountryOfNationalityPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhatIsCountryOfHeadOfficePage, "answer").success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-      val request = FakeRequest(GET, doYouKnowCountryOfNationalityRoute)
+      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
 
@@ -93,15 +92,14 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
 
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
-      val filledForm = form.bind(Map("value" -> "true"))
+      val filledForm = form.bind(Map("value" -> "answer"))
 
       val expectedJson = Json.obj(
-        "form"   -> filledForm,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(filledForm("value"))
+        "form" -> filledForm,
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "doYouKnowCountryOfNationality.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -122,13 +120,12 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
           .build()
 
       val request =
-        FakeRequest(POST, doYouKnowCountryOfNationalityRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, whatIsCountryOfHeadOfficeRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -140,7 +137,7 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
         .thenReturn(Future.successful(Html("")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-      val request = FakeRequest(POST, doYouKnowCountryOfNationalityRoute).withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, whatIsCountryOfHeadOfficeRoute).withFormUrlEncodedBody(("value", ""))
       val boundForm = form.bind(Map("value" -> ""))
       val templateCaptor = ArgumentCaptor.forClass(classOf[String])
       val jsonCaptor = ArgumentCaptor.forClass(classOf[JsObject])
@@ -152,12 +149,11 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
       verify(mockRenderer, times(1)).render(templateCaptor.capture(), jsonCaptor.capture())(any())
 
       val expectedJson = Json.obj(
-        "form"   -> boundForm,
-        "mode"   -> NormalMode,
-        "radios" -> Radios.yesNo(boundForm("value"))
+        "form" -> boundForm,
+        "mode" -> NormalMode
       )
 
-      templateCaptor.getValue mustEqual "doYouKnowCountryOfNationality.njk"
+      templateCaptor.getValue mustEqual "whatIsCountryOfHeadOffice.njk"
       jsonCaptor.getValue must containJson(expectedJson)
 
       application.stop()
@@ -167,13 +163,13 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, doYouKnowCountryOfNationalityRoute)
+      val request = FakeRequest(GET, whatIsCountryOfHeadOfficeRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -183,14 +179,14 @@ class DoYouKnowCountryOfNationalityControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, doYouKnowCountryOfNationalityRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, whatIsCountryOfHeadOfficeRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
