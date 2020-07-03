@@ -35,14 +35,14 @@ import utils.CheckYourAnswersHelper
 import scala.concurrent.ExecutionContext
 
 class SettlorListController @Inject()(
-    override val messagesApi: MessagesApi,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    countryService: CountryService,
-    formProvider: IsSettlorIndividualOrBusinessFormProvider,
-    val controllerComponents: MessagesControllerComponents,
-    renderer: Renderer
+                                      override val messagesApi: MessagesApi,
+                                      identify: IdentifierAction,
+                                      getData: DataRetrievalAction,
+                                      requireData: DataRequiredAction,
+                                      countryService: CountryService,
+                                      formProvider: IsSettlorIndividualOrBusinessFormProvider,
+                                      val controllerComponents: MessagesControllerComponents,
+                                      renderer: Renderer
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
 
   private def radios(field: Field)(implicit messages: Messages): Seq[Item] = Seq(

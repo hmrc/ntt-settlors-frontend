@@ -30,13 +30,13 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import scala.concurrent.ExecutionContext
 
 class IndexController @Inject()(
-    val controllerComponents: MessagesControllerComponents,
-    navigator: Navigator,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    sessionRepository: SessionRepository,
-    renderer: Renderer
+                                val controllerComponents: MessagesControllerComponents,
+                                navigator: Navigator,
+                                identify: IdentifierAction,
+                                getData: DataRetrievalAction,
+                                requireData: DataRequiredAction,
+                                sessionRepository: SessionRepository,
+                                renderer: Renderer
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData).async {

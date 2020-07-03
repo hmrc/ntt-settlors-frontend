@@ -33,15 +33,15 @@ import uk.gov.hmrc.viewmodels.{DateInput, NunjucksSupport}
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheDateOfDeathController @Inject()(
-    override val messagesApi: MessagesApi,
-    sessionRepository: SessionRepository,
-    navigator: Navigator,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    formProvider: WhatIsTheDateOfDeathFormProvider,
-    val controllerComponents: MessagesControllerComponents,
-    renderer: Renderer
+                                                override val messagesApi: MessagesApi,
+                                                sessionRepository: SessionRepository,
+                                                navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction,
+                                                formProvider: WhatIsTheDateOfDeathFormProvider,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                renderer: Renderer
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
 
   val form = formProvider()

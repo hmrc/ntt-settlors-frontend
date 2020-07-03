@@ -34,15 +34,15 @@ import utils.CheckYourAnswersHelper
 import scala.concurrent.ExecutionContext
 
 class CheckYourAnswersController @Inject()(
-    override val messagesApi: MessagesApi,
-    navigator: Navigator,
-    identify: IdentifierAction,
-    getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
-    countryService: CountryService,
-    sessionRepository: SessionRepository,
-    val controllerComponents: MessagesControllerComponents,
-    renderer: Renderer
+                                            override val messagesApi: MessagesApi,
+                                            navigator: Navigator,
+                                            identify: IdentifierAction,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            countryService: CountryService,
+                                            sessionRepository: SessionRepository,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            renderer: Renderer
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
