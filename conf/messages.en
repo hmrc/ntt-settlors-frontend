@@ -226,11 +226,11 @@ isSettlorLegallyIncapable.heading = Is the settlor legally incapable?
 isSettlorLegallyIncapable.checkYourAnswersLabel = Is the settlor legally incapable?
 isSettlorLegallyIncapable.error.required = Select yes if the settlor legally incapable
 
-whatIsBusinessName.title = What is the business's name?
-whatIsBusinessName.heading = What is the business's name?
-whatIsBusinessName.checkYourAnswersLabel = What is the business's name?
-whatIsBusinessName.error.required = Enter the business's name
-whatIsBusinessName.error.length = The business's name must be 100 characters or less
+whatIsBusinessName.title = What is the business’s name?
+whatIsBusinessName.heading = What is the business’s name?
+whatIsBusinessName.checkYourAnswersLabel = What is the business’s name?
+whatIsBusinessName.error.required = Enter the business’s name
+whatIsBusinessName.error.length = The business’s name must be 100 characters or less
 
 whatIsCountryOfHeadOffice.title = What is the country in which the head office is based?
 whatIsCountryOfHeadOffice.heading = What is the country in which the head office is based?
