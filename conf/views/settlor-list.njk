@@ -1,0 +1,58 @@
+{% extends "includes/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk"     import govukBackLink %}
+{% from "govuk/components/radios/macro.njk"        import govukRadios %}
+{% from "govuk/components/button/macro.njk"        import govukButton %}
+{% from "govuk/components/summary-list/macro.njk"  import govukSummaryList %}
+{% from "macros/title.njk"                         import title %}
+
+{% block pageTitle %}
+  {{ title(messages("settlorlist.title")) }}
+{% endblock %}
+
+{% block mainContent %}
+
+  {{ govukBackLink({
+    text: messages("site.back")
+  }) }}
+
+  <div class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">
+          {{ messages("settlorlist.heading") }}
+        </h1>
+
+        <h1 class="govuk-heading-s">
+          {{ messages("settlorlist.completed") }}
+        </h1>
+
+        <h1 class="govuk-heading-s">
+          {{ messages("settlorlist.incomplete") }}
+        </h1>
+
+        {{ govukRadios({
+            classes: "govuk-radios--inline",
+            name: 'value',
+            fieldset: {
+              legend: {
+                text: messages('settlorlist.addAnother'),
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: radios,
+            errorMessage: form.value.error
+          }) }}
+
+          {{ govukButton({
+            text: messages("site.save.continue")
+          }) }}
+
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

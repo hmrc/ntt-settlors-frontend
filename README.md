@@ -1,8 +1,6 @@
 
-# ntt-settlors-frontend
+# Non-taxable Trust Settlors Frontend
 
-This is a placeholder README.md for a new repository
+Will trust pages are at ***http://localhost:9000/ntt-settlors-frontend/will-trust***
 
-### License
-
-This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
+Living settlor pages are at ***http://localhost:9000/ntt-settlors-frontend/living-settlor***
